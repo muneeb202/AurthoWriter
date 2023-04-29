@@ -1,5 +1,14 @@
 {
+  "name": "aurth",
+  "homepage": "https://im-chosenone.github.io/aurtho",
   "devDependencies": {
     "gh-pages": "^5.0.0"
+  },
+  "scripts": {
+    "predeploy": "npm run build",
+    "deploy": "gh-pages -d build"
+  },
+  "dependencies": {
+    "quill-languagetool": "^1.0.7"
   }
 }

@@ -1,24 +1,14 @@
-import TextEditor from "./TextEditor";
-import {
-  BrowserRouter as Router,
-  Routes, Route, Navigate
-} from 'react-router-dom';
-import TempComp from "./Temp";
-import {v4 as uuidV4} from 'uuid'
-
-
+import { Header, Footer, FormButton, SideBar } from "./Header.js";
+import "./App.css";
+import Temp from "./Temp.js";
 
 function App() {
   return (
     <div>
-      <Router>
-        <Routes>
-        <Route path="/" exact element={<Navigate to = {`documents/${uuidV4()}`} />}/>
-          <Route path="/documents/:id" element={<TextEditor />}/>
-        </Routes>
-      </Router>
-    </div>    
-    // <TextEditor/>
+      {/* <SideBar /> */}
+      {/* <FormButton /> */}
+      <Temp />
+    </div>
   );
 }
 
