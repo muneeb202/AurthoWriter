@@ -1,11 +1,12 @@
 import { useCallback, useEffect, useState } from "react";
+import ReactDOM from "react-dom/client";
 import Quill from "quill";
 import "quill/dist/quill.snow.css";
 import { io } from "socket.io-client";
 import { useParams } from "react-router-dom";
 import { pdfExporter } from "quill-to-pdf";
 import { saveAs } from "file-saver";
-import { Configuration, OpenAIApi } from "openai";
+import { SideBar } from "./Header";
 
 const SAVE_INTERVAL_MS = 2000;
 
@@ -25,10 +26,6 @@ export default function TextEditor() {
   const [socket, setSocket] = useState();
   const [quill, setQuill] = useState();
 
-  const [urlValue, setUrlValue] = useState("");
-
-  const [prompt, setPrompt] = useState("");
-  const [result, setResult] = useState("");
   useEffect(() => {
     if (socket == null || quill == null) return;
 
@@ -90,25 +87,6 @@ export default function TextEditor() {
     };
   }, [socket, quill]);
 
-  const exportPdf = async () => {
-    const delta = quill.getContents();
-
-    const blob = await pdfExporter.generatePdf(delta);
-
-    saveAs(blob, "pdf-export.pdf");
-  };
-
-  function imageHandler() {
-    console.log("image handler called");
-    var range = this.quill.getSelection();
-
-    // var value = result;
-    console.log(result);
-
-    if (result) {
-      this.quill.insertEmbed(range.index, "image", result, Quill.sources.USER);
-    }
-  }
   const wrapperRef = useCallback((wrapper) => {
     if (wrapper == null) return;
     wrapper.innerHTML = "";
@@ -116,14 +94,7 @@ export default function TextEditor() {
     wrapper.append(editor);
     const q = new Quill(editor, {
       theme: "snow",
-      modules: {
-        toolbar: {
-          container: TOOLBAR_OPTIONS,
-          handlers: {
-            image: imageHandler,
-          },
-        },
-      },
+      modules: { toolbar: TOOLBAR_OPTIONS },
     });
     setQuill(q);
 
@@ -132,71 +103,28 @@ export default function TextEditor() {
     setQuill(q);
   }, []);
 
-  function Side() {
-    const configuration = new Configuration({
-      apiKey: "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",
-      headers: {
-        "User-Agent":
-          "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/58.0.3029.110 Safari/537.36",
-      },
-    });
+  const exportPdf = async () => {
+    const delta = quill.getContents();
 
-    const openai = new OpenAIApi(configuration);
+    const blob = await pdfExporter.generatePdf(delta);
 
-    const genrateImage = async () => {
-      const res = await openai.createImage({
-        prompt: prompt,
-        n: 1,
-        size: "512x512",
-        //prompt
-        //n 1 - 10
-        //size 1024 x 1024 default $0.02
-        //respose_format
-        //user
-      });
-
-      setResult(res.data.data[0].url);
-      console.log("result done");
-      console.log(result);
-    };
-
-    // const putImage = async () => {
-    //   console.log("place image ");
-    // };
-
-    return (
-      <div className="no">
-        <h2>genrate image</h2>
-        <br />
-        <textarea
-          placeholder="lets genrate image"
-          onChange={(e) => setPrompt(e.target.value)}
-        />
-
-        <br />
-        <button onClick={genrateImage}>genrateimage</button>
-        <hr />
-
-        <img
-          className="created_image"
-          src={result}
-          alt={result}
-          width="100"
-          height="100"
-        />
-        {/* <button onClick={putImage}>place</button> */}
-      </div>
-    );
-  }
+    saveAs(blob, "pdf-export.pdf");
+  };
+  const [urlValue, setUrlValue] = useState("");
+  const insertLink = async () => {};
 
   return (
     <>
       <div className="container">
         <div ref={wrapperRef} />
-        {Side()}
-        {/* <SideBar /> */}
+        <SideBar />
         <button onClick={exportPdf}>Export PDF</button>
       </div>
+      <input
+        type="text"
+        value={urlValue}
+        onChange={(e) => setUrlValue(e.target.value)}
+      />
     </>
   );
 }

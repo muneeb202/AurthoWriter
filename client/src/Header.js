@@ -3,8 +3,6 @@ import logo from "./Logo.png";
 import { useState } from "react";
 import Temp from "./Temp";
 import { Configuration, OpenAIApi } from "openai";
-import imageHandler from "./TextEditor.js";
-import { myfunct } from "./TextEditor.js";
 
 function Header() {
   return (
@@ -33,69 +31,65 @@ function Footer() {
   return <div className="footer">this is footer</div>;
 }
 
-// function SideBar() {
-//   const [prompt, setPrompt] = useState("");
-//   const [result, setResult] = useState("");
+function SideBar() {
+  const [prompt, setPrompt] = useState("");
+  const [result, setResult] = useState("");
 
-//   const configuration = new Configuration({
-//     apiKey: "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",
-//     headers: {
-//       "User-Agent":
-//         "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/58.0.3029.110 Safari/537.36",
-//     },
-//   });
+  const configuration = new Configuration({
+    apiKey: "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",
+    headers: {
+      "User-Agent":
+        "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/58.0.3029.110 Safari/537.36",
+    },
+  });
 
-//   const openai = new OpenAIApi(configuration);
+  const openai = new OpenAIApi(configuration);
 
-//   const genrateImage = async () => {
-//     const res = await openai.createImage({
-//       prompt: prompt,
-//       n: 1,
-//       size: "512x512",
-//       //prompt
-//       //n 1 - 10
-//       //size 1024 x 1024 default $0.02
-//       //respose_format
-//       //user
-//     });
+  const generateImage = async () => {
+    const res = await openai.createImage({
+      prompt: prompt,
+      n: 1,
+      size: "512x512",
+      //prompt
+      //n 1 - 10
+      //size 1024 x 1024 default $0.02
+      //respose_format
+      //user
+    });
 
-//     setResult(res.data.data[0].url);
+    setResult(res.data.data[0].url);
+    console.log(res);
+  };
 
-//     //console.log(res);
-//   };
+  const putImage = async () => {
+    console.log("place image ");
+  };
 
-//   const putImage = async () => {
-//     //console.log(result);
-//     myfunct(result);
+  console.log(prompt);
+  return (
+    <div className="no">
+      <h2>generate image</h2>
+      <br />
+      <textarea
+        placeholder="lets generate image"
+        onChange={(e) => setPrompt(e.target.value)}
+      />
 
-//     console.log("place image ");
-//   };
+      <br />
+      <button onClick={generateImage}>generateimage</button>
+      <hr />
 
-//   //console.log(prompt);
-//   return (
-//     <div className="no">
-//       <h2>genrate image</h2>
-//       <br />
-//       <textarea
-//         placeholder="lets genrate image"
-//         onChange={(e) => setPrompt(e.target.value)}
-//       />
-
-//       <br />
-//       <button onClick={genrateImage}>genrateimage</button>
-//       <hr />
-
-//       <img
-//         className="created_image"
-//         src={result}
-//         alt={result}
-//         width="100"
-//         height="100"
-//       />
-//       <button onClick={putImage}>place</button>
-//     </div>
-//   );
-// }
+      <img
+        className="created_image"
+        src={result}
+        alt={result}
+        width="100"
+        height="100"
+      />
+      <button onClick={putImage}>place</button>
+    </div>
+  );
+}
 
 function FormButton() {
   const [showForm, setShowForm] = useState(false);
@@ -197,4 +191,4 @@ function FormButton() {
   );
 }
 
-export { Header, Footer, FormButton };
+export { Header, Footer, FormButton, SideBar };
