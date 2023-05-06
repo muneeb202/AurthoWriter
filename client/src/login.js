@@ -1,33 +1,44 @@
 import React, { useState } from 'react';
 import './App.css';
-import profile from './profile';
-import { Route, Routes, useNavigate } from 'react-router-dom/dist/umd/react-router-dom.development';
 
 const Login = () => {
-  const [loggedIn, setLoggedIn] = useState(false);
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
-  const navigate = useNavigate();
+  const [errorMessage, setErrorMessage] = useState('');
 
-  const handleLogin = () => {
-    // Replace the following with your own authentication logic
-    if (username === 'user' && password === 'password') {
-      setLoggedIn(true);
-      navigate('/profile'); // navigate to the Profile page
-    } else {
-      alert('Invalid username or password!');
+  const handleSubmit = async (event) => {
+    event.preventDefault();
+    try {
+      const response = await fetch('http://localhost:3000/Login', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+          username,
+          password
+        })
+      });
+      if (response.ok) {
+        window.location.href = '/';
+      } else {
+        const errorMessage = await response.text();
+        setErrorMessage(`Login failed: ${errorMessage}`);
+      }
+    } catch (error) {
+      console.error(error);
+      setErrorMessage('Login failed: Network error');
     }
   };
-  
 
   return (
     <div className="login-page">
       <div className="login-container">
-        <div className="login-title">
-          <h2 className="login-text">User Login</h2>
+        <div className='login-title'>
+          <h2 className="login-text">Login</h2>
         </div>
         <br></br>
-        <form className="login-form" onSubmit={handleLogin}>
+        <form className="login-form" onSubmit={handleSubmit}>
           <input
             type="text"
             placeholder="Username"
@@ -42,14 +53,13 @@ const Login = () => {
             value={password}
             onChange={(event) => setPassword(event.target.value)}
           />
+          {errorMessage && <p className="error-message">{errorMessage}</p>}
           <br></br>
-          <button onClick={handleLogin} type="submit" className="home-button">
-            Login
-          </button>
+          <div className='center-button'>
+            <button type="submit" className="home-button">Login</button>
+          </div>
           <br></br>
-          <a className="sign-form" href="/SignUp">
-            Don't have an account? Sign Up
-          </a>
+          <a className="sign-form" href="/SignUp">Don't have an account? Sign up</a>
         </form>
       </div>
     </div>

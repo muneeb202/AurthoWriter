@@ -9,6 +9,7 @@
     "deploy": "gh-pages -d build"
   },
   "dependencies": {
+    "ejs": "^3.1.9",
     "quill-languagetool": "^1.0.7"
   }
 }
