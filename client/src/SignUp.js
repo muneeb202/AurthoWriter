@@ -14,7 +14,7 @@ const SignUp = () => {
       return;
     }
     try {
-      const response = await fetch('http://localhost:3000/SignUp', {
+      const response = await fetch('http://localhost:3000/signup', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'
@@ -35,6 +35,7 @@ const SignUp = () => {
       setErrorMessage('Sign up failed: Network error');
     }
   };
+  
 
   return (
     <div className="login-page">
