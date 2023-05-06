@@ -85,6 +85,27 @@ app.post('/api/users', async (req, res) => {
   }
 });
 
+app.post("/login", async (req, res) => {
+  try {
+    const { username, password } = req.body;
+    const user = await User.findOne({ username: username });
+
+    if (!user) {
+      return res.status(400).json({ error: "Invalid username or password." });
+    }
+
+    const validPassword = await bcrypt.compare(password, user.password);
+
+    if (!validPassword) {
+      return res.status(400).json({ error: "Invalid username or password." });
+    }
+
+    res.status(200).json({ message: "Login successful!" });
+  } catch (err) {
+    console.log(err);
+    res.status(500).json({ error: "An error occurred while logging in." });
+  }
+});
 
 app.get("/login", (req, res) => {
   res.render("login");

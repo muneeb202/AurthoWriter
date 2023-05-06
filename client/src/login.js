@@ -20,7 +20,7 @@ const Login = () => {
         })
       });
       if (response.ok) {
-        window.location.href = '/';
+        window.location.href = '/profile';
       } else {
         const errorMessage = await response.text();
         setErrorMessage(`Login failed: ${errorMessage}`);
