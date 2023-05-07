@@ -3,6 +3,7 @@ import logo from "./Logo.png";
 import { useState } from "react";
 import Temp from "./Temp";
 import { Configuration, OpenAIApi } from "openai";
+import ImageTemp from './placeholder.png';
 
 function Header() {
   return (
@@ -32,6 +33,7 @@ function Footer() {
 }
 
 function SideBar() {
+  const [isOpen, setIsOpen] = useState(false);
   const [prompt, setPrompt] = useState("");
   const [result, setResult] = useState("");
 
@@ -67,27 +69,31 @@ function SideBar() {
 
   console.log(prompt);
   return (
-    <div className="no">
-      <h2>generate image</h2>
-      <br />
-      <textarea
-        placeholder="lets generate image"
-        onChange={(e) => setPrompt(e.target.value)}
-      />
+    <div>
+			<div className="button-container gen">
+				<button className="side-button gen" onClick={() => setIsOpen(!isOpen)}>Generate Image</button>
+			</div>
+			<div className={`${isOpen ? 'sidebar-open' : 'sidebar-close'}`}>
+				<br />
+				<textarea className="image-desc"
+					placeholder="Image description"
+					onChange={(e) => setPrompt(e.target.value)}
+				/>
 
-      <br />
-      <button onClick={generateImage}>generateimage</button>
-      <hr />
+				<button className="lside-button" onClick={generateImage}>Generate</button>
+				<hr />
 
-      <img
-        className="created_image"
-        src={result}
-        alt={result}
-        width="100"
-        height="100"
-      />
-      <button onClick={putImage}>place</button>
-    </div>
+				<img
+					className="created_image"
+					src={result ? result : ImageTemp}
+					alt={result ? result : "Placeholder"}
+					width="100"
+					height="100"
+				/>
+				<br /><br />
+				<button className="lside-button" onClick={putImage}>Insert</button>
+			</div>
+		</div>
   );
 }
 

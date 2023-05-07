@@ -11,6 +11,7 @@ const BookInfo = () => {
 	const [title, setTitle] = useState("");
 	const [prompt, setPrompt] = useState("");
 	const [result, setResult] = useState("");
+	const [errorMessage, setErrorMessage] = useState('');
 	const inputRef = useRef(null);
 
   const handleImageChange = (e) => {
@@ -53,20 +54,25 @@ const BookInfo = () => {
 		//console.log(res);
 	};
 
-	const navigateToBook = () => {
+	const navigateToBook = (e) => {
+		e.preventDefault();
+		if (title == '') {
+			setErrorMessage('Book title cannot be empty');
+			return;
+		}
 		navigate('/documents/' + title)
 	}
 
 	return (
 		<div className="info-bg">
-			<a href='/home'><div className='arrow'></div></a>
+			<a href='/'><div className='arrow'></div></a>
 			<div className='login-title'>
 				<h2 className="login-text">Book Information</h2>
 			</div>
 			<br></br>
 			<div className="info-container">
 				<form className="info-form"> 
-					<input type="text" onChange={(e) => setTitle(e.target.value)} placeholder="Book Title" className="input-field" />
+					<input type="text" onChange={(e) => setTitle(e.target.value.trim())} placeholder="Book Title" className="input-field" />
 					<textarea type="text" placeholder="Book Description" className="book-desc" />
 					<br></br>
 					<div className='image-container'>
@@ -77,7 +83,8 @@ const BookInfo = () => {
 							<button className="al" onClick={(e) => generateImages(e)}> Generate </button>
 						</div>
 					</div>
-					<button onClick={navigateToBook} type="submit" className="home-button">Create Book</button>
+					{errorMessage && <p className="message">{errorMessage}</p>}
+					<button onClick={(e) => navigateToBook(e)} type="submit" className="home-button">Create Book</button>
 					<br></br>
 				</form>
 			</div>

@@ -1,4 +1,5 @@
 // import { Header, Footer, FormButton, SideBar } from "./Header.js";
+import { useState } from 'react'
 import Login from './login.js';
 import "./App.css";
 import Home from "./home.js";
@@ -9,6 +10,7 @@ import {Route,Routes} from "react-router-dom"
 import TextEditor from "./TextEditor";
 import Profile from "./profile";
 function App() {
+  const [currentUser, setCurrentUser] = useState('')
   return (
     <div>
       {/* <SideBar /> */}
@@ -17,12 +19,12 @@ function App() {
       {/* <Temp /> */}
       <Routes>
       <Route exact path="/About" element={<About/>}/>
-        <Route exact path="/BookInfo" element={<BookInfo/>}/>
-        <Route exact path="/documents/:id" element={<TextEditor />}/>
+        <Route exact path="/BookInfo" element={<BookInfo currentUser={currentUser}/>}/>
+        <Route exact path="/documents/:id" element={<TextEditor set/>}/>
         <Route exact path="/SignUp" element={<SignUp/>}/>
-        <Route exact path="/Login" element={<Login/>}/>
+        <Route exact path="/Login" element={<Login setCurrentUser={setCurrentUser}/>}/>
         <Route exact path="/" element={<Home/>}/>
-        <Route exact path="/profile" element={<Profile/>}/>
+        <Route exact path="/profile" element={<Profile currentUser={currentUser}/>}/>
       </Routes>
     </div>
   );

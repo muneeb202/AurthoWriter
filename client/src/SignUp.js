@@ -9,6 +9,10 @@ const SignUp = () => {
 
   const handleSubmit = async (event) => {
     event.preventDefault();
+    if (username == '') {
+      setErrorMessage('Username cannot be empty');
+      return
+    }
     if (password !== confirmPassword) {
       setErrorMessage('Passwords do not match');
       return;
@@ -35,10 +39,15 @@ const SignUp = () => {
       setErrorMessage('Sign up failed: Network error');
     }
   };
+
+  function handleConfirmPasswordChange(e) {
+		setConfirmPassword(e.target.value);
+	}
   
 
   return (
     <div className="login-page">
+      <a href='/'><div className='arrow'></div></a>
       <div className="login-container">
         <div className='login-title'>
           <h2 className="login-text">SignUp</h2>
@@ -50,7 +59,7 @@ const SignUp = () => {
             placeholder="Username"
             className="input-field"
             value={username}
-            onChange={(event) => setUsername(event.target.value)}
+            onChange={(event) => setUsername(event.target.value.trim())}
           />
           <input
             type="password"
@@ -64,9 +73,9 @@ const SignUp = () => {
             placeholder="Confirm Password"
             className="input-field"
             value={confirmPassword}
-            onChange={(event) => setConfirmPassword(event.target.value)}
+            onChange={(event) => handleConfirmPasswordChange(event)}
           />
-          {errorMessage && <p className="error-message">{errorMessage}</p>}
+          {errorMessage && <p className="message">{errorMessage}</p>}
           <br></br>
           <div className='center-button'>
             <button type="submit" className="home-button">Sign Up</button>

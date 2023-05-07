@@ -1,20 +1,62 @@
 const mongoose = require("mongoose");
 const express = require("express");
+const Document = require("./Document")
 const app = express();
 const port = 3000;
 const bcrypt = require('bcrypt');
 
-mongoose.connect("mongodb://0.0.0.0:27017/test", {
-  useNewUrlParser: true,
-  useUnifiedTopology: true,
-})
-.then(() => console.log("MongoDB Connected"))
-.catch((err) => console.log(err));
+const cors = require('cors');
+app.use(cors());
+app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
+app.use(express.static("public"));
+app.set("view engine", "ejs");
 
-const userSchema = new mongoose.Schema({
+mongoose.connect('mongodb://127.0.0.1:27017/test')
+	.then(() => console.log('Connected!'));
+mongoose.set('strictQuery', true);
+
+const userSchema = new mongoose.Schema({ 
   username: { type: String, required: true },
   password: { type: String, required: true }
 });
+
+const io = require("socket.io")(3001, {
+	cors: {
+		origin: ['http://localhost:3000', 'http://localhost:3002'],
+		methods: ['GET', 'POST']
+	},
+})
+
+const defaultValue = ""
+
+io.on("connection", socket => {
+	socket.on('get-document', async documentid => {
+		const document = await findOrCreateDocument(documentid)
+		socket.join(documentid)
+		socket.emit("load-document", document.data)
+
+		socket.on("send-changes", delta => {
+
+			socket.broadcast.to(documentid).emit("receive-changes", delta)
+		})
+		socket.on("save-document", async data => {
+			await Document.findByIdAndUpdate(documentid, { data })
+		})
+	});
+
+  // io.on("all-documents", async () => {
+  //   const documents = await Document.find();
+  //   socket.emit("retrieved", documents)
+  // })
+})
+
+async function findOrCreateDocument(id) {
+	if (id == null) return
+	const document = await Document.findById(id)
+	if (document) return document
+	return await Document.create({ _id: id, data: defaultValue })
+}
 
 // create index on username field to ensure uniqueness
 userSchema.index({ username: 1 }, { unique: true });
@@ -32,12 +74,16 @@ userSchema.pre('save', async function (next) {
 
 const User = mongoose.model("User", userSchema);
 
-const cors = require('cors');
-app.use(cors());
-app.use(express.json());
-app.use(express.urlencoded({ extended: true }));
-app.use(express.static("public"));
-app.set("view engine", "ejs");
+app.get('/documents', (req, res) => {
+  Document.find()
+    .then(users => {
+      res.json(users);
+    })
+    .catch(err => {
+      console.error(err);
+      res.status(500).json({ error: 'Internal server error' });
+    });
+});
 
 app.get("/", (req, res) => {
   res.render("signup");
@@ -111,6 +157,7 @@ app.get("/login", (req, res) => {
   res.render("login");
 });
 
-app.listen(port, () => {
+app.listen(3000, () => {
   console.log(`Server running on port ${port}`);
-});
+}); 
+

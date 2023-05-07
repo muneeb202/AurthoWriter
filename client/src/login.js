@@ -1,10 +1,12 @@
 import React, { useState } from 'react';
 import './App.css';
+import { useNavigate } from 'react-router-dom/dist/umd/react-router-dom.development';
 
-const Login = () => {
+const Login = ({setCurrentUser}) => {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [errorMessage, setErrorMessage] = useState('');
+  const navigate = useNavigate();
 
   const handleSubmit = async (event) => {
     event.preventDefault();
@@ -20,7 +22,9 @@ const Login = () => {
         })
       });
       if (response.ok) {
-        window.location.href = '/profile';
+        setCurrentUser(username);
+        console.log(username)
+        navigate('/profile');
       } else {
         const errorMessage = await response.text();
         setErrorMessage(`Login failed: ${errorMessage}`);
@@ -33,6 +37,7 @@ const Login = () => {
 
   return (
     <div className="login-page">
+      <a href='/'><div className='arrow'></div></a>
       <div className="login-container">
         <div className='login-title'>
           <h2 className="login-text">Login</h2>

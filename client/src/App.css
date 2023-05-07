@@ -161,6 +161,18 @@ background: linear-gradient(90deg, rgba(231,217,164,1) 0%, rgba(203,138,41,1) 53
   background-color:#00000017;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
   display: flex;
+  animation: login-load 1.5s ease-in-out;
+}
+
+@keyframes login-load {
+  0% { opacity: 0; }
+  100% { opacity: 1; }
+}
+
+.message{
+  color: rgb(94, 68, 2);
+  font-family:'Courier New', Courier, monospace;
+  font-size: smaller;
 }
 
 .login-title {
@@ -430,6 +442,23 @@ background: linear-gradient(90deg, rgba(231,217,164,1) 0%, rgba(203,138,41,1) 53
   display: flex;
   justify-content: center;
   align-items: center;
+  animation: info-load 3s ease-out;
+  float: right;
+  width: 0px;
+}
+
+@keyframes info-load {
+  0%, 40% { 
+    transform: translateX(100%);
+    flex: 0%;
+    opacity: 0;
+  }
+
+  100% { 
+    transform: translateX(0%);
+    flex: 50%;
+    opacity: 1;
+  }
 }
 
 .book-desc {
@@ -488,3 +517,203 @@ footer {
   padding: 20px;
   text-align: center;
 }
+
+.image-container {
+  display: flex;
+  margin: 3%;
+  width: 100%;
+}
+
+.image-container img{
+  margin: 5%;
+  min-width: 100px;
+  background-color: rgba(84, 36, 2, 0.355);
+}
+
+.image-input {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+}
+
+.image-input textarea{
+  resize: none;
+  border-radius: 8px 8px 0px 0px;
+  text-align: center;
+  font-family:'Courier New', Courier, monospace;
+  width: 80%;
+  height: 1.5cm;
+}
+
+.image-input button{
+  background-color: #f4cc80;
+  color: #000000;
+  transition: all 0.3s ease;
+  border-radius: 0px 0px 8px 8px;
+  cursor: pointer;
+  font-family: inherit;
+  padding: 5px 15px;
+  width: 80%;
+  border-width: 0;
+}
+
+.image-input button:hover{
+  color: #261900;
+  background-color: #9c7327;
+}
+
+.main-page {
+  min-height: 77vh;
+}
+
+.button-container {
+  position: fixed;
+  left: 0;
+  width: 400px;
+  height: 45%;
+  overflow-y: auto;
+}
+
+.button-container.gen{
+  top: 0;
+}
+
+.button-container.pdf{
+  top: 55%;
+}
+
+
+.lside-button{
+  margin-bottom: 5%;
+  width: 90%;
+  padding: 10px 0px;
+  background-color: #ffc64c;
+  border-radius: 0px 0px 8px 8px;
+  border-width: 0;
+  font-family: 'Courier New', Courier, monospace;
+}
+
+.lside-button:hover{
+  background-color: #b18a36;
+}
+
+.side-button.pdf{
+  top: 0;
+}
+
+.side-button.gen{
+  bottom: 10px;
+}
+
+.side-button {
+  font-size: 13px;
+  font-weight: 400;
+  letter-spacing: 1px;
+  padding: 13px 20px 13px;
+  outline: 0;
+  left: 1cm;
+  width: 6cm;
+  border: 1px solid black;
+  cursor: pointer;
+  position: absolute;
+  background-color: rgba(0, 0, 0, 0);
+  user-select: none;
+  -webkit-user-select: none;
+  touch-action: manipulation;
+  font-family: 'Courier New', Courier, monospace;
+  z-index: 1;
+}
+
+.side-button:after {
+  content: "";
+  background-color: #ffc64c;
+  width: 100%;
+  z-index: -1;
+  position: absolute;
+  height: 100%;
+  top: 7px;
+  left: 7px;
+  transition: 0.2s;
+}
+
+.side-button:hover:after {
+  top: 0px;
+  left: 0px;
+}
+
+@media (min-width: 768px) {
+  .side-button {
+    padding: 13px 50px 13px;
+  }
+}
+
+
+.sidebar-open {
+  position: fixed;
+  top: 0;
+  right: 0;
+  height: 100%;
+  width: 250px;
+  background-color: #f3f3f3;
+  box-shadow: 0 0 5px 0 rgba(0, 0, 0 ,.5);
+  padding: 20px;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  animation: float-down 1.5s ease-in-out;
+}
+
+@keyframes float-down {
+  0% {transform: translateY(-100%);}
+  100% {transform: translateY(0%);}
+}
+
+.sidebar-close {
+  position: fixed;
+  top: 0;
+  right: 0;
+  height: 100%;
+  width: 250px;
+  background-color: #f3f3f3;
+  box-shadow: 0 0 5px 0 rgba(0, 0, 0 ,.5);
+  padding: 20px;
+  overflow-y: auto;
+  transform: translateY(-100%);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  animation: float-up 1.5s ease-in-out;
+}
+
+@keyframes float-up {
+  0% {transform: translateY(0%);}
+  100% {transform: translateY(-100%);}
+}
+
+.image-desc {
+  resize: none;
+  border-radius: 8px 8px 0px 0px;
+  text-align: center;
+  font-family:'Courier New', Courier, monospace;
+  width: 90%;
+  height: 1.5cm;
+  border-bottom: none;
+}
+
+/* .container {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  grid-gap: 20px;
+}
+
+.document {
+  background-color: #f5f5f5;
+  padding: 20px;
+  border-radius: 5px;
+  box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
+} */
