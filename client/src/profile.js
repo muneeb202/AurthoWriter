@@ -30,11 +30,10 @@ const Profile = ({currentUser}) => {
     try {
       const response = await fetch(`http://localhost:3000/documents/${id}`);
       const data = await response.json();
-      console.log("Deleted " + id);
-      window.location.reload();
     } catch (error) {
       console.error(error);
     }
+    window.location.reload();
   }
 
   return (
