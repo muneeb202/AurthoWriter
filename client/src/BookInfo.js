@@ -6,7 +6,7 @@ import { Configuration, OpenAIApi } from "openai";
 import ImageTemp from './placeholder.png';
 
 
-const BookInfo = () => {
+const BookInfo = ({currentUser}) => {
 	const navigate = useNavigate();
 	const [title, setTitle] = useState("");
 	const [prompt, setPrompt] = useState("");
@@ -65,14 +65,14 @@ const BookInfo = () => {
 
 	return (
 		<div className="info-bg">
-			<a href='/'><div className='arrow'></div></a>
+			<a onClick={() => navigate('/profile')}><div className='arrow'></div></a>
 			<div className='login-title'>
 				<h2 className="login-text">Book Information</h2>
 			</div>
 			<br></br>
 			<div className="info-container">
 				<form className="info-form"> 
-					<input type="text" onChange={(e) => setTitle(e.target.value.trim())} placeholder="Book Title" className="input-field" />
+					<input type="text" onChange={(e) => setTitle(e.target.value.trim())} placeholder='Book Title' className="input-field" />
 					<textarea type="text" placeholder="Book Description" className="book-desc" />
 					<br></br>
 					<div className='image-container'>

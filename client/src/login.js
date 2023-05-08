@@ -27,7 +27,7 @@ const Login = ({setCurrentUser}) => {
         navigate('/profile');
       } else {
         const errorMessage = await response.text();
-        setErrorMessage(`Login failed: ${errorMessage}`);
+        setErrorMessage(`Incorrect username or password`);
       }
     } catch (error) {
       console.error(error);

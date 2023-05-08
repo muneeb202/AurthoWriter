@@ -32,7 +32,7 @@ const SignUp = () => {
         window.location.href = '/login';
       } else {
         const errorMessage = await response.text();
-        setErrorMessage(`Sign up failed: ${errorMessage}`);
+        setErrorMessage(`User already exists`);
       }
     } catch (error) {
       console.error(error);
@@ -41,7 +41,16 @@ const SignUp = () => {
   };
 
   function handleConfirmPasswordChange(e) {
-		setConfirmPassword(e.target.value);
+    console.log(password + " " + e.target.value);
+    setConfirmPassword(e.target.value);
+		if (e.target.value === password) {
+      console.log('Matched');
+      setErrorMessage('');
+    }
+    else {
+      setErrorMessage("Passwords do not match")
+    }
+
 	}
   
 

@@ -44,11 +44,6 @@ io.on("connection", socket => {
 			await Document.findByIdAndUpdate(documentid, { data })
 		})
 	});
-
-  // io.on("all-documents", async () => {
-  //   const documents = await Document.find();
-  //   socket.emit("retrieved", documents)
-  // })
 })
 
 async function findOrCreateDocument(id) {
@@ -74,15 +69,14 @@ userSchema.pre('save', async function (next) {
 
 const User = mongoose.model("User", userSchema);
 
-app.get('/documents', (req, res) => {
-  Document.find()
-    .then(users => {
-      res.json(users);
-    })
-    .catch(err => {
-      console.error(err);
-      res.status(500).json({ error: 'Internal server error' });
-    });
+app.get('/documents', async (req, res) => {
+  try {
+    const documents = await Document.find();
+    res.json(documents);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: 'Server Error' });
+  }
 });
 
 app.get("/", (req, res) => {

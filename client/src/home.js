@@ -34,7 +34,6 @@ const Home = () => {
           <main className="home-content">
                 <h1>Authowriter</h1>
                 <p>A platform that provides authors a simple and convenient way to write and publish books.</p>
-                <a href='/BookInfo'><button className="home-button">Create Book</button></a>
           </main>
           <img className='mainImage' src={require("./img1.png")} alt='img1'></img>
       </div>

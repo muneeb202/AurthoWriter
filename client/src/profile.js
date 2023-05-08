@@ -1,29 +1,27 @@
 import React, { useEffect, useState } from 'react';
 import './App.css';
 import { io } from "socket.io-client";
+import { useNavigate } from 'react-router-dom/dist/umd/react-router-dom.development';
 
-const Profile = (props) => {
-  // const [documents, setDocuments] = useState([]);
-  // const [socket, setSocket] = useState();
+const Profile = ({currentUser}) => {
+  const [documents, setDocuments] = useState([]);
+  const navigate = useNavigate();
 
-  // useEffect(() => {
-  //   if (socket == null) return;
-  //   socket.once("retrieved", (docs) => {
-  //     setDocuments(docs)
-  //   });
-  // }, [socket, documents]);
-
-  // useEffect(() => {
-	// 	const s = io("http://localhost:3000");
-	// 	setSocket(s);
-
-	// 	return () => {
-	// 		s.disconnect();
-	// 	};
-	// }, []);
+  const openDocument = (id) => {
+    navigate("/documents/" + id)
+  }
 
   useEffect(() => {
-    console.log("Welcome");
+    const fetchDocuments = async () => {
+      try {
+        const response = await fetch('http://localhost:3000/documents');
+        const data = await response.json();
+        setDocuments(data);
+      } catch (error) {
+        console.error(error);
+      }
+    };
+    fetchDocuments();
   }, [])
 
   return (
@@ -31,30 +29,22 @@ const Profile = (props) => {
       <header className="home-header">
         <img className='logoImage' src={require('./Logo.png')} alt='logo' />
         <nav className="home-nav-bar">
-          <a href="/">Home</a>
-          <a href="/About">About</a>
-          <a href='/Login'><button className="home-button" >Get Started</button></a>
+          <a>Hello {currentUser}!</a>
+          <a className='logout' href="/">Logout</a>
         </nav>
       </header>
 
       <main className='main-page'>
+        <h1>My Books</h1>
         <div className="grid">
-          <div className="grid-item item-1">{props.currentUser}</div>
-          <div className="grid-item item-2">Item 2</div>
-          <div className="grid-item item-3">Item 3</div>
-          <div className="grid-item item-4">Item 4</div>
-          <div className="grid-item item-5">Item 5</div>
-          <div className="grid-item item-6">Item 6</div>
-        </div>
-        {/* <div className="container">
           {documents.map(document => (
-            <div className="document" key={document._id}>
+            <div className="grid-item" key={document._id} onClick={() => openDocument(document._id)}>
               <h2>{document._id}</h2>
             </div>
           ))}
-        </div> */}
+        </div>
+        <button onClick={() => navigate('/BookInfo')} className="book-button">Create Book</button>
       </main>
-
       <footer className="home-footer">
         <p>&copy; 2023 All rights reserved.</p>
       </footer>
