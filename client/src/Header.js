@@ -4,6 +4,7 @@ import { useState } from "react";
 import Temp from "./Temp";
 import { Configuration, OpenAIApi } from "openai";
 import ImageTemp from './placeholder.png';
+import { useNavigate } from "react-router-dom/dist/umd/react-router-dom.development";
 
 function Header() {
   return (
@@ -36,9 +37,9 @@ function SideBar() {
   const [isOpen, setIsOpen] = useState(false);
   const [prompt, setPrompt] = useState("");
   const [result, setResult] = useState("");
+  const navigate = useNavigate();
 
   const configuration = new Configuration({
-    apiKey: "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",
     headers: {
       "User-Agent":
         "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/58.0.3029.110 Safari/537.36",
@@ -72,6 +73,7 @@ function SideBar() {
     <div>
 			<div className="button-container gen">
 				<button className="side-button gen" onClick={() => setIsOpen(!isOpen)}>Generate Image</button>
+        <button className="side-button save" onClick={() => navigate('/profile')}>Save and Exit</button>
 			</div>
 			<div className={`${isOpen ? 'sidebar-open' : 'sidebar-close'}`}>
 				<br />

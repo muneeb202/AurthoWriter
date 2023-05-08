@@ -2,12 +2,14 @@ import React, { useEffect, useState } from 'react';
 import './App.css';
 import { io } from "socket.io-client";
 import { useNavigate } from 'react-router-dom/dist/umd/react-router-dom.development';
+import redCross from './cross.png'
 
 const Profile = ({currentUser}) => {
   const [documents, setDocuments] = useState([]);
   const navigate = useNavigate();
 
   const openDocument = (id) => {
+    console.log("Opening " + id);
     navigate("/documents/" + id)
   }
 
@@ -24,6 +26,17 @@ const Profile = ({currentUser}) => {
     fetchDocuments();
   }, [])
 
+  const deleteDocument = async (id) => {
+    try {
+      const response = await fetch(`http://localhost:3000/documents/${id}`);
+      const data = await response.json();
+      console.log("Deleted " + id);
+      window.location.reload();
+    } catch (error) {
+      console.error(error);
+    }
+  }
+
   return (
     <div className="profile-page">
       <header className="home-header">
@@ -39,6 +52,7 @@ const Profile = ({currentUser}) => {
         <div className="grid">
           {documents.map(document => (
             <div className="grid-item" key={document._id} onClick={() => openDocument(document._id)}>
+              <img className='cross' src={redCross} alt={redCross} onClick={(event) => {event.stopPropagation(); deleteDocument(document._id)}}></img>
               <h2>{document._id}</h2>
             </div>
           ))}

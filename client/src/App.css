@@ -240,7 +240,7 @@ background: linear-gradient(90deg, rgba(231,217,164,1) 0%, rgba(203,138,41,1) 53
 .home-header {
   /* border-top: #000; */
   padding: 20px;
-  background-color: #f5f5f5;
+  background-color: #d3d2d28a;
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -521,7 +521,7 @@ main {
 
 .grid-item:hover{
   cursor: pointer;
-  background-color: #ffffff88;
+  background-color: #78707043;
 }
 
 footer {
@@ -585,18 +585,18 @@ footer {
   position: fixed;
   left: 0;
   width: 400px;
-  height: 45%;
   overflow-y: auto;
 }
 
 .button-container.gen{
   top: 0;
+  height: 55%;
 }
 
 .button-container.pdf{
   top: 55%;
+  height: 45%;
 }
-
 
 .lside-button{
   margin-bottom: 5%;
@@ -617,7 +617,15 @@ footer {
 }
 
 .side-button.gen{
-  bottom: 10px;
+  bottom: 120px;
+}
+
+.side-button.save {
+  bottom: 40px;
+}
+
+.side-button.reader {
+  top:80px;
 }
 
 .side-button {
@@ -753,3 +761,19 @@ footer {
   font-weight: 520;
   margin-left: 50px;
 }
+
+.cross{
+  position: sticky;
+  width: 20px;
+  top: 0;
+  right: 0;
+  opacity: 0;
+  cursor: default;
+  z-index: 100;
+  transition: opacity 0.2s ease-in-out;
+}
+
+.grid-item:hover .cross {
+  opacity: 1;
+}
+

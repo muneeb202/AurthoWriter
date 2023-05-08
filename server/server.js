@@ -79,6 +79,18 @@ app.get('/documents', async (req, res) => {
   }
 });
 
+app.get('/documents/:id', async (req, res) => {
+  const id = req.params.id;
+  try {
+    const result = await Document.deleteOne({_id: id});
+    console.log(result);
+    res.send('Document deleted successfully');
+  } catch (error) {
+    console.error(error);
+    res.status(500).send('Error deleting document');
+  }
+});
+
 app.get("/", (req, res) => {
   res.render("signup");
 });
